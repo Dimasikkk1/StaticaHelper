@@ -1,12 +1,6 @@
-using ClosedXML.Excel;
 using StaticaHelper.Properties;
 using StaticaHelper.Views;
 using System.Data;
-using System.Linq;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows.Forms;
-using Path = System.IO.Path;
 
 namespace StaticaHelper
 {
@@ -55,7 +49,6 @@ namespace StaticaHelper
             set => dataGridView.DataSource = value;
         }
 
-
         private int _recordsCount;
 
         public int RecordsCount
@@ -72,6 +65,38 @@ namespace StaticaHelper
             }
         }
 
+        private IEnumerable<int> _selectedRows = default!;
+
+        public IEnumerable<int> SelectedRows
+        {
+            get => _selectedRows;
+            set
+            {
+                if (_selectedRows == value)
+                    return;
+
+                _selectedRows = value;
+
+                SelectedRecordsCount = value.Count();
+            }
+        }
+
+        private int _selectedRecordsCount;
+
+        public int SelectedRecordsCount
+        {
+            get => _selectedRecordsCount;
+            set
+            {
+                if (_selectedRecordsCount == value)
+                    return;
+
+                _selectedRecordsCount = value;
+
+                labelSelectedCount.Text = _selectedRecordsCount.ToString();
+            }
+        }
+
         public DateTime From
         {
             get => dateTimePickerFrom.Value;
@@ -84,18 +109,26 @@ namespace StaticaHelper
             set => dateTimePickerTo.Value = value;
         }
 
+        public bool AutoSaveAndOpen
+        {
+            get => checkBoxAutoSaveAndOpen.Checked;
+            set => checkBoxAutoSaveAndOpen.Checked = value;
+        }
+
         public MainForm() : base()
         {
             InitializeComponent();
-
+            
             buttonSettings.Click += (s, e) => ShowSettingsForm?.Invoke(this, EventArgs.Empty);
             buttonAbout.Click += (s, e) => ShowAboutForm?.Invoke(this, EventArgs.Empty);
-            buttonUpdate.Click += (s, e) => UpdateDataTable?.Invoke(this, EventArgs.Empty);
+            buttonGet.Click += (s, e) => UpdateDataTable?.Invoke(this, EventArgs.Empty);
             buttonDownloadAll.Click += (s, e) => DownloadAll?.Invoke(this, EventArgs.Empty);
+            buttonDownloadSelected.Click += (s, e) => DownloadSelected?.Invoke(this, EventArgs.Empty);
             buttonQueryYesterday.Click += (s, e) => GetYesterday?.Invoke(this, EventArgs.Empty);
             buttonQueryThreeDays.Click += (s, e) => GetThreeDays?.Invoke(this, EventArgs.Empty);
             buttonQueryAll.Click += (s, e) => GetAll?.Invoke(this, EventArgs.Empty);
-            
+
+            dataGridView.SelectionChanged += OnSelectionChanged;
             dataGridView.AutoGenerateColumns = false;
         }
 
@@ -116,18 +149,27 @@ namespace StaticaHelper
 
         //    //Process.Start("explorer.exe", directoryPath);
         //}
+        public void SetFromAndToDates(DateTime? from, DateTime? to)
+        {
+            labelFrom.Text = $"{from?.ToLongDateString()} {from?.ToLongTimeString()}";
+            labelTo.Text = $"{to?.ToLongDateString()} {to?.ToLongTimeString()}";
+        }
 
-        private void dataGridView_SelectionChanged(object sender, EventArgs e)
+        private void OnSelectionChanged(object? sender, EventArgs e)
         {
             var dataGridView = sender as DataGridView ?? throw new NullReferenceException();
 
-            toolStripStatusLabelSelectedCount.Text = dataGridView.SelectedRows.Cast<DataGridViewRow>().Count().ToString();//.Count.ToString();
+            SelectedRows = dataGridView.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(row => row.Index)
+                .Order();
         }
 
         public event EventHandler? ShowSettingsForm;
         public event EventHandler? ShowAboutForm;
         public event EventHandler? UpdateDataTable;
         public event EventHandler? DownloadAll;
+        public event EventHandler? DownloadSelected;
         public event EventHandler? GetYesterday;
         public event EventHandler? GetThreeDays;
         public event EventHandler? GetAll;

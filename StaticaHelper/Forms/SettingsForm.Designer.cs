@@ -73,7 +73,8 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 126);
+            this.label5.Location = new System.Drawing.Point(13, 134);
+            this.label5.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 15);
             this.label5.TabIndex = 8;
@@ -119,7 +120,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 10);
+            this.label1.Location = new System.Drawing.Point(13, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(17, 15);
             this.label1.TabIndex = 0;
@@ -128,7 +130,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 39);
+            this.label2.Location = new System.Drawing.Point(13, 47);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 15);
             this.label2.TabIndex = 2;
@@ -137,7 +140,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 68);
+            this.label3.Location = new System.Drawing.Point(13, 76);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 15);
             this.label3.TabIndex = 4;
@@ -146,7 +150,8 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 97);
+            this.label4.Location = new System.Drawing.Point(13, 105);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 15);
             this.label4.TabIndex = 5;

@@ -34,6 +34,21 @@ namespace StaticaHelper.Forms
             set => textBoxDatabase.Text = value;
         }
 
-        public SettingsForm() : base() => InitializeComponent();
+        public SettingsForm() : base()
+        {
+            InitializeComponent();
+
+            textBoxIP.KeyPress += CloseOnEnter;
+            textBoxPort.KeyPress += CloseOnEnter;
+            textBoxUsername.KeyPress += CloseOnEnter;
+            textBoxPassword.KeyPress += CloseOnEnter;
+            textBoxDatabase.KeyPress += CloseOnEnter;
+        }
+
+        private void CloseOnEnter(object? sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+                Close();
+        }
     }
 }

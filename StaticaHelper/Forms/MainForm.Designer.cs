@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.NumberColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BruttoDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +44,7 @@
             this.buttonQueryThreeDays = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonQueryAll = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -50,16 +52,22 @@
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
-            this.buttonUpdate = new System.Windows.Forms.Button();
+            this.buttonGet = new System.Windows.Forms.Button();
             this.buttonDownloadAll = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonDownloadSelected = new System.Windows.Forms.Button();
+            this.checkBoxAutoSaveAndOpen = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.labelConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.labelRecordsCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelFrom = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSelectedCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelTo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelSeparator = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelRecordsCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.labelSelectedCount = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -83,15 +91,15 @@
             this.TareColumn,
             this.NettoColumn});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(3, 33);
+            this.dataGridView.Location = new System.Drawing.Point(3, 58);
             this.dataGridView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 29;
-            this.dataGridView.Size = new System.Drawing.Size(831, 253);
+            this.dataGridView.Size = new System.Drawing.Size(831, 228);
             this.dataGridView.TabIndex = 1;
-            this.dataGridView.SelectionChanged += new System.EventHandler(this.dataGridView_SelectionChanged);
+            this.dataGridView.SelectionChanged += new System.EventHandler(this.OnSelectionChanged);
             // 
             // NumberColumn
             // 
@@ -213,15 +221,23 @@
             // справкаToolStripMenuItem
             // 
             this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buttonHelp,
             this.buttonAbout});
             this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
             this.справкаToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.справкаToolStripMenuItem.Text = "Справка";
             // 
+            // buttonHelp
+            // 
+            this.buttonHelp.Name = "buttonHelp";
+            this.buttonHelp.Size = new System.Drawing.Size(281, 22);
+            this.buttonHelp.Text = "Инструкция по работе с программой";
+            this.buttonHelp.Visible = false;
+            // 
             // buttonAbout
             // 
             this.buttonAbout.Name = "buttonAbout";
-            this.buttonAbout.Size = new System.Drawing.Size(149, 22);
+            this.buttonAbout.Size = new System.Drawing.Size(281, 22);
             this.buttonAbout.Text = "О программе";
             // 
             // tableLayoutPanel1
@@ -249,14 +265,15 @@
             this.flowLayoutPanel1.Controls.Add(this.dateTimePickerFrom);
             this.flowLayoutPanel1.Controls.Add(this.label2);
             this.flowLayoutPanel1.Controls.Add(this.dateTimePickerTo);
-            this.flowLayoutPanel1.Controls.Add(this.buttonUpdate);
+            this.flowLayoutPanel1.Controls.Add(this.buttonGet);
             this.flowLayoutPanel1.Controls.Add(this.buttonDownloadAll);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Controls.Add(this.buttonDownloadSelected);
+            this.flowLayoutPanel1.Controls.Add(this.checkBoxAutoSaveAndOpen);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 2);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(831, 27);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(831, 52);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // label1
@@ -299,15 +316,15 @@
             this.dateTimePickerTo.TabIndex = 1;
             this.dateTimePickerTo.Value = new System.DateTime(2022, 12, 3, 0, 0, 0, 0);
             // 
-            // buttonUpdate
+            // buttonGet
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(277, 2);
-            this.buttonUpdate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(82, 22);
-            this.buttonUpdate.TabIndex = 2;
-            this.buttonUpdate.Text = "Обновить";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonGet.Location = new System.Drawing.Point(277, 2);
+            this.buttonGet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonGet.Name = "buttonGet";
+            this.buttonGet.Size = new System.Drawing.Size(82, 22);
+            this.buttonGet.TabIndex = 2;
+            this.buttonGet.Text = "Получить";
+            this.buttonGet.UseVisualStyleBackColor = true;
             // 
             // buttonDownloadAll
             // 
@@ -319,16 +336,27 @@
             this.buttonDownloadAll.Text = "Выгрузить всё";
             this.buttonDownloadAll.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonDownloadSelected
             // 
-            this.button1.Location = new System.Drawing.Point(482, 2);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(173, 22);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Выгрузить выделенное";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
+            this.buttonDownloadSelected.Location = new System.Drawing.Point(482, 2);
+            this.buttonDownloadSelected.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonDownloadSelected.Name = "buttonDownloadSelected";
+            this.buttonDownloadSelected.Size = new System.Drawing.Size(173, 22);
+            this.buttonDownloadSelected.TabIndex = 6;
+            this.buttonDownloadSelected.Text = "Выгрузить выделенное";
+            this.buttonDownloadSelected.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAutoSaveAndOpen
+            // 
+            this.checkBoxAutoSaveAndOpen.AutoSize = true;
+            this.checkBoxAutoSaveAndOpen.Checked = true;
+            this.checkBoxAutoSaveAndOpen.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAutoSaveAndOpen.Location = new System.Drawing.Point(3, 30);
+            this.checkBoxAutoSaveAndOpen.Name = "checkBoxAutoSaveAndOpen";
+            this.checkBoxAutoSaveAndOpen.Size = new System.Drawing.Size(270, 19);
+            this.checkBoxAutoSaveAndOpen.TabIndex = 7;
+            this.checkBoxAutoSaveAndOpen.Text = "Автоматически сохранять и открывать Excel";
+            this.checkBoxAutoSaveAndOpen.UseVisualStyleBackColor = true;
             // 
             // statusStrip1
             // 
@@ -337,9 +365,14 @@
             this.labelConnectionStatus,
             this.progressBar,
             this.toolStripStatusLabel1,
-            this.labelRecordsCount,
+            this.labelFrom,
             this.toolStripStatusLabel2,
-            this.toolStripStatusLabelSelectedCount});
+            this.labelTo,
+            this.labelSeparator,
+            this.toolStripStatusLabel3,
+            this.labelRecordsCount,
+            this.toolStripStatusLabel4,
+            this.labelSelectedCount});
             this.statusStrip1.Location = new System.Drawing.Point(0, 288);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 12, 0);
@@ -363,8 +396,39 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(88, 21);
-            this.toolStripStatusLabel1.Text = "Всего записей:";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(15, 21);
+            this.toolStripStatusLabel1.Text = "С";
+            // 
+            // labelFrom
+            // 
+            this.labelFrom.Name = "labelFrom";
+            this.labelFrom.Size = new System.Drawing.Size(61, 21);
+            this.labelFrom.Text = "00.00.0000";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(23, 21);
+            this.toolStripStatusLabel2.Text = "По";
+            // 
+            // labelTo
+            // 
+            this.labelTo.Name = "labelTo";
+            this.labelTo.Size = new System.Drawing.Size(61, 21);
+            this.labelTo.Text = "00.00.0000";
+            // 
+            // labelSeparator
+            // 
+            this.labelSeparator.Name = "labelSeparator";
+            this.labelSeparator.Size = new System.Drawing.Size(374, 21);
+            this.labelSeparator.Spring = true;
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(88, 21);
+            this.toolStripStatusLabel3.Text = "Всего записей:";
             // 
             // labelRecordsCount
             // 
@@ -372,17 +436,17 @@
             this.labelRecordsCount.Size = new System.Drawing.Size(13, 21);
             this.labelRecordsCount.Text = "0";
             // 
-            // toolStripStatusLabel2
+            // toolStripStatusLabel4
             // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(60, 21);
-            this.toolStripStatusLabel2.Text = "Выбрано:";
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(60, 21);
+            this.toolStripStatusLabel4.Text = "Выбрано:";
             // 
-            // toolStripStatusLabelSelectedCount
+            // labelSelectedCount
             // 
-            this.toolStripStatusLabelSelectedCount.Name = "toolStripStatusLabelSelectedCount";
-            this.toolStripStatusLabelSelectedCount.Size = new System.Drawing.Size(13, 21);
-            this.toolStripStatusLabelSelectedCount.Text = "0";
+            this.labelSelectedCount.Name = "labelSelectedCount";
+            this.labelSelectedCount.Size = new System.Drawing.Size(13, 21);
+            this.labelSelectedCount.Text = "0";
             // 
             // MainForm
             // 
@@ -391,11 +455,12 @@
             this.ClientSize = new System.Drawing.Size(837, 338);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Утилита для выгрузки отчётов Автомобильных весов";
+            this.Text = "StaticHelper Утилита для выгрузки отчётов Автомобильных весов";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -420,7 +485,7 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private DateTimePicker dateTimePickerFrom;
         private DateTimePicker dateTimePickerTo;
-        private Button buttonUpdate;
+        private Button buttonGet;
         private ToolStripMenuItem buttonSettings;
         private Label label1;
         private Label label2;
@@ -437,12 +502,19 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel labelRecordsCount;
         private ToolStripProgressBar progressBar;
-        private ToolStripStatusLabel toolStripStatusLabel1;
-        private ToolStripStatusLabel toolStripStatusLabel2;
-        private ToolStripStatusLabel toolStripStatusLabelSelectedCount;
-        private Button button1;
+        private ToolStripStatusLabel toolStripStatusLabel3;
+        private ToolStripStatusLabel toolStripStatusLabel4;
+        private ToolStripStatusLabel labelSelectedCount;
+        private Button buttonDownloadSelected;
         private ToolStripStatusLabel labelConnectionStatus;
         private ToolStripMenuItem buttonQueryThreeDays;
         private ToolStripMenuItem buttonQueryAll;
+        private CheckBox checkBoxAutoSaveAndOpen;
+        private ToolStripStatusLabel labelTo;
+        private ToolStripStatusLabel toolStripStatusLabel1;
+        private ToolStripStatusLabel labelFrom;
+        private ToolStripStatusLabel toolStripStatusLabel2;
+        private ToolStripStatusLabel labelSeparator;
+        private ToolStripMenuItem buttonHelp;
     }
 }

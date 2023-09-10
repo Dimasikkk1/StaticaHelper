@@ -5,22 +5,27 @@ namespace StaticaHelper.Views
     internal interface IMainView : IView
     {
         /// <summary>
-        /// Свойство состояния подключения к базе Статика 3.
+        /// Состояние подключения к базе Статика 3.
         /// </summary>
         ConnectionState Connection { get; set; }
 
         /// <summary>
-        /// Свойство управления состоянием <see cref="ProgressBar"/>.
+        /// Состояние <see cref="ProgressBar"/>.
         /// </summary>
         bool InProgress { get; set; }
 
         /// <summary>
-        /// Свойство таблицы данных для отображения данных для предварительного просмотра.
+        /// Таблица для отображения данных для предварительного просмотра.
         /// </summary>
         DataTable DataTable { get; set; }
 
         /// <summary>
-        /// Свойство общее количество отображаемых записей в таблице данных.
+        /// Индексы выбранных строчек.
+        /// </summary>
+        IEnumerable<int> SelectedRows { get; set; }
+
+        /// <summary>
+        /// Общее количество отображаемых записей в таблице данных.
         /// </summary>
         int RecordsCount { get; set; }
 
@@ -34,10 +39,23 @@ namespace StaticaHelper.Views
         /// </summary>
         DateTime To { get; set; }
 
+        /// <summary>
+        /// Автоматическое сохранение выгруженных данных и открытие Excel
+        /// </summary>
+        bool AutoSaveAndOpen { get; set; }
+
+        /// <summary>
+        /// Сеттер дат "С" и "По" в строку состояния.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        void SetFromAndToDates(DateTime? from, DateTime? to);
+
         event EventHandler ShowSettingsForm;
         event EventHandler ShowAboutForm;
         event EventHandler UpdateDataTable;
         event EventHandler DownloadAll;
+        event EventHandler DownloadSelected;
         event EventHandler GetYesterday;
         event EventHandler GetThreeDays;
         event EventHandler GetAll;

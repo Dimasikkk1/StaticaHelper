@@ -58,6 +58,7 @@ namespace StaticaHelper.Presenters
             view.ShowAboutForm += OnShowAboutForm;
             view.UpdateDataTable += OnUpdateDataTable;
             view.DownloadAll += OnDownloadAll;
+            view.DownloadSelected += OnDownloadSelected;
             view.GetYesterday += OnGetYesterday;
             view.GetThreeDays += OnGetThreeDays;
             view.GetAll += OnGetAll;
@@ -74,6 +75,7 @@ namespace StaticaHelper.Presenters
             View.Location = Settings.Default.MainFormLocation;
             View.Size = Settings.Default.MainFormSize;
             View.Maximized = Settings.Default.MainFormMaximized;
+            View.AutoSaveAndOpen = Settings.Default.AutoSaveAndOpen;
         }
 
         protected virtual void OnCloseForm(object? sender, EventArgs args)
@@ -81,6 +83,7 @@ namespace StaticaHelper.Presenters
             Settings.Default.MainFormLocation = View.Location;
             Settings.Default.MainFormSize = View.Size;
             Settings.Default.MainFormMaximized = View.Maximized;
+            Settings.Default.AutoSaveAndOpen = View.AutoSaveAndOpen;
             Settings.Default.Save();
         }
 
@@ -115,9 +118,19 @@ namespace StaticaHelper.Presenters
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnDownloadAll(object? sender, EventArgs args) => 
+            Process(async () => await _workbookSaver.SaveAsync(_currentRecords, _queryesHandbook.LastFrom, _queryesHandbook.LastTo, View.AutoSaveAndOpen), () => true);
+
+        /// <summary>
+        /// Обработчик события нажатия на кнопку "Выгрузить выделенное" от <see cref="IMainView"/> (<see cref="MainForm"/>).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnDownloadSelected(object? sender, EventArgs args) =>
             Process(async () =>
             {
-                await _workbookSaver.SaveAsync(_currentRecords);
+                var selectedRecords = _currentRecords.GetIndexedItems(View.SelectedRows);
+
+                await _workbookSaver.SaveAsync(selectedRecords, selectedRecords?.FirstOrDefault()?.BruttoDate, selectedRecords?.LastOrDefault()?.TareDate, View.AutoSaveAndOpen);
             }, () => true);
 
         /// <summary>
@@ -167,27 +180,14 @@ namespace StaticaHelper.Presenters
             View.InProgress = false;
         }
 
-        //private void UpdateConnectionString()
-        //{
-        //    var connectionString = new ConnectionString
-        //    {
-        //        Host = Settings.Default.Host,
-        //        Port = Settings.Default.Port,
-        //        Username = Settings.Default.Username,
-        //        Password = Settings.Default.Password,
-        //        Database = Settings.Default.Database
-        //    };
-
-        //    //_connectionInspector.ConnectionString = connectionString;
-        //    //_queryesHandbook.ConnectionString = connectionString;
-        //}
-
         private async void UpdateCurrentRecords(IEnumerable<Record> records)
         {
             _currentRecords = records;
 
             View.DataTable = await _currentRecords.ToDataTableAsync();
             View.RecordsCount = _currentRecords.Count();
+
+            View.SetFromAndToDates(_queryesHandbook.LastFrom, _queryesHandbook.LastTo);
         }
 
         #endregion

@@ -12,6 +12,16 @@ namespace StaticaHelper.Models
         public ConnectionString ConnectionString { get; set; } = default!;
 
         /// <summary>
+        /// Дата "С" из последнего запроса.
+        /// </summary>
+        public DateTime? LastFrom { get; private set; }
+
+        /// <summary>
+        /// Дата "По" из последнего запроса.
+        /// </summary>
+        public DateTime? LastTo { get; private set; }
+
+        /// <summary>
         /// Асинхронный запрос на получение записей в заданном диапазоне дат.
         /// </summary>
         /// <param name="from">Начальная дата.</param>
@@ -34,6 +44,9 @@ namespace StaticaHelper.Models
                     Tare = record.Tare,
                     Netto = record.Netto
                 });
+
+            LastFrom = records.FirstOrDefault()?.BruttoDate;
+            LastTo = records.LastOrDefault()?.TareDate;
 
             return await records.ToListAsync();
         }
@@ -83,6 +96,9 @@ namespace StaticaHelper.Models
                     Tare = record.Tare,
                     Netto = record.Netto
                 });
+
+            LastFrom = records.FirstOrDefault()?.BruttoDate;
+            LastTo = records.LastOrDefault()?.TareDate;
 
             return await records.ToListAsync();
         }

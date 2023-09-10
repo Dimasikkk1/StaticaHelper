@@ -30,5 +30,32 @@ namespace StaticaHelper.Extensions
                 return dataTable;
             });
         }
+
+        /// <summary>
+        /// Фильтр элементов коллекции <see cref="IEnumerable{T}"/> по индексам.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="indices"></param>
+        /// <returns>Отфильтрованная коллекция.</returns>
+        public static IEnumerable<T> GetIndexedItems<T>(this IEnumerable<T> collection, IEnumerable<int> indixes)
+        {
+            var currentIndex = -1;
+
+            using var collectionEnum = collection.GetEnumerator();
+
+            foreach (int index in indixes)
+                while (collectionEnum.MoveNext())
+                {
+                    currentIndex += 1;
+
+                    if (currentIndex == index)
+                    {
+                        yield return collectionEnum.Current;
+
+                        break;
+                    }
+                }
+        }
     }
 }
